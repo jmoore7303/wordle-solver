@@ -47,51 +47,80 @@ if __name__ == "__main__":
 
     current_suggestion = random.choice(remainingwords)
 
-    print(f'Guess 1 is {current_suggestion}')
 
-    userinput = input(f'Result 1 is:')
+    while(True):
+        current_suggestion = random.choice(remainingwords)
+        print(f'Guess is {current_suggestion}')
+        userinput = input(f'Result is:')
+        if userinput == 'badword':
+            continue
+
+#continue means start loop again
+        if len(userinput) == 5:
+            print(userinput)
+
+        else:
+           print(f'Please only use 5-letter values.')
+           exit(1)
+
+        greenyellowletters = []
+        for position in range(len(userinput)):
+            if userinput[position] in ['Y','E']:
+                greenyellowletters.append(current_suggestion[position])
+
+        print(f'the green and yellow letters list is: {greenyellowletters} ')
 
 
 
-    if len(userinput) == 5:
-
-        print(userinput)
-    else:
-       print(f'Please only use 5-letter values.')
-
-       exit(1)
-
-    for position in range(len(userinput)):
-        guess_letter = current_suggestion[position]
-        guess_result = userinput[position]
-
-        if guess_result == 'G':
-            new_guesses = []
-            for word in remainingwords:
-                if guess_letter in word:
+        for position in range(len(userinput)):
+            guess_letter = current_suggestion[position]
+            guess_result = userinput[position]
+            if guess_result == 'G':
+                if guess_letter in greenyellowletters:
                     continue
-                else:
-                    new_guesses.append(word)
 
-        remainingwords = new_guesses
+                new_guesses = []
 
-        print(f'because position {position} letter {guess_letter} was result {guess_result},')
-        print(f'only {len(remainingwords)} remain.')
+                for word in remainingwords:
+                    if guess_letter in word:
+                        continue
+                    else:
+                        new_guesses.append(word)
+                remainingwords = new_guesses
+                print(f'because position {position} letter {guess_letter} was result {guess_result},')
+                print(f'only {len(remainingwords)} remain.')
 
-    current_suggestion = random.choice(remainingwords)
+        #for yellow
+        #if word does not have letter, reject
+        #if word does has letter in position, reject
 
-    print(f'Guess 2 is {current_suggestion}')
+            if guess_result == 'Y':
+                new_guesses = []
+                for word in remainingwords:
 
-#dad challenge post leaving me
+                    if guess_letter in word and guess_letter != word[position]:
+                        new_guesses.append(word)
 
+                remainingwords = new_guesses
 
+                print(f'because position {position} letter {guess_letter} was result {guess_result},')
+                print(f'only {len(remainingwords)} remain.')
 
+        #green
+        #if word does not have letter in position, reject
 
+            if guess_result == 'E':
+                new_guesses = []
+                for word in remainingwords:
+                    if word[position] == guess_letter:
+                        new_guesses.append(word)
 
-        #here is where you will put
-        #if letter = g
-        # if letter = y
-        # if letter = e
+                        print(f'keeping {word}')
+                    else:
+                        print(f'rejecting {word}')
+                        continue
 
+                remainingwords = new_guesses
 
-
+                print(f'because position {position} letter {guess_letter} was result {guess_result},')
+                print(f'only {len(remainingwords)} remain.')
